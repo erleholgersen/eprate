@@ -54,6 +54,7 @@ common.words <- count(
     sort = TRUE
     );
 
+# get rating info by word
 ratings <- tidy.data %>% 
     group_by(word) %>%
     summarize(

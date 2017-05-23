@@ -16,6 +16,21 @@ args = parser.parse_args()
 
 search_term = args.search_term
 
+
+### FUNCTIONS #################################################################
+def get_top_tv_show(search_results):
+	""" Return top search result which is a TV show """
+
+	top_result = None
+
+	for i in range(0, len(search_results) - 1):
+		if 'tv series' == search_results[i]['kind']:
+			top_result = search_results[i]
+			break
+
+	return top_result
+
+
 ### GET DATA ##################################################################
 
 # initalize database
@@ -26,10 +41,7 @@ search_results = db.search_movie(search_term)
 #! check that you actually get correct result
 # take top result which is a TV show
 #! this is not the most robust approach - re-consider.
-for i in range(0, len(search_results) - 1):
-	if 'tv series' == search_results[i]['kind']:
-		top_result = search_results[i]
-		break
+top_result = get_top_tv_show(search_results)
 
 # let user know what's happening
 print 'Downloading data on', top_result['title']
