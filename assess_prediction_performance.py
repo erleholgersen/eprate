@@ -5,9 +5,9 @@
 import argparse
 import numpy as np
 
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.model_selection import cross_val_score
-from sklearn.metrics import mean_absolute_error, make_scorer
+from sklearn.metrics import make_scorer, mean_squared_error, mean_absolute_error
 
 from helper_functions import *
 
@@ -36,9 +36,13 @@ Y = episode_data['rating']
 
 ### TEST MODELS ###############################################################
 
-model = RandomForestRegressor()
-left_out = LeaveOneOut()
+scorer = make_scorer(mean_squared_error)
 
-scores = cross_val_score(model, X, Y, cv = 5, scoring = make_scorer(mean_absolute_error))
-print scores
+loss_functions = ['ls', 'lad', 'huber', 'quantile']
+n_estimators = [20, 50, 100, 200, 500]
 
+for loss in loss_functions:
+    for n in n_estimators:
+        model = GradientBoostingRegressor(loss = loss, n_estimators = n, learning_rate = 0.05)
+        scores = cross_val_score(model, X, Y, cv = 5, scoring = scorer)
+        print loss, n, np.mean(scores)
