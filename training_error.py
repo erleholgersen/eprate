@@ -6,6 +6,8 @@ import argparse
 import numpy as np
 
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.model_selection import cross_val_score, GridSearchCV
+from sklearn.metrics import make_scorer, mean_squared_error, mean_absolute_error
 
 from helper_functions import *
 
@@ -13,14 +15,16 @@ from helper_functions import *
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('show', help = 'Term to search for on IMDB')
-parser.add_argument('new_description', help = 'Description to predict')
-args = parser.parse_args()
+# parser.add_argument('show', help = 'Term to search for on IMDB')
+# parser.add_argument('new_description', help = 'Description to predict')
+# args = parser.parse_args()
 
-show = args.show
-new_description = args.new_description
+# show = args.show
+# new_description = args.new_description
 
-threshold = 10
+show = 'Doctor Who'
+
+threshold = 3
 
 ### PREPARE DATA ##############################################################
 
@@ -30,16 +34,14 @@ episode_tokens, features = tokenize_episodes(episode_data['plot'], threshold = t
 X = pd.DataFrame(episode_tokens, columns = features.keys(), index = episode_data['title'])
 Y = episode_data['rating']
 
-gb_model = GradientBoostingRegressor(n_estimators = 50, learning_rate = 0.02, loss = 'lad')
-gb_model = gb_model.fit(X, Y)
+### TEST MODELS ###############################################################
 
-### PREDICT ###################################################################
 
-r = make_indicators(new_description, features)
+# for loss in loss_functions:
+model = GradientBoostingRegressor(n_estimators = 1000, learning_rate = 0.02, loss = 'lad')
 
-predicted_rating = gb_model.predict( np.array(r).reshape(1, -1) )
+model.fit(X, Y);
 
-print predicted_rating
 
 
 

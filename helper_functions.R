@@ -90,7 +90,7 @@ dotboxplot <- function(plot.data, ylab.labels, colours, xaxt = 's', rating.lim =
 	    las = 1
 	    );
 
-	abline(v = mean(episode.data$rating), lty = 3);
+	abline(v = median(episode.data$rating), lty = 3);
 
 
 }

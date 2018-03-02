@@ -17,16 +17,20 @@ source('~/eprate/helper_functions.R');
 min.recurrence <- 5;
 n <- 10;
 
+show <- 'Game of Thrones';
+
 season.colours <- c(
     '#a6cee3','#1f78b4','#b2df8a','#33a02c',
     '#fb9a99','#e31a1c','#fdbf6f','#ff7f00',
-    '#cab2d6','#6a3d9a'
+    '#cab2d6','#6a3d9a', 'black'
     );
 
 ### PREPARE DATA ##################################################################################
 
+show.id <- gsub('\\s', '_', tolower(show));
+
 episode.data <- read.table(
-    "friends_episodes.tsv", 
+    file.path('data', paste0(show.id, '_episodes.tsv')), 
     sep = '\t', 
     header = TRUE
     );
@@ -38,13 +42,19 @@ tidy.data <- unnest_tokens(
     plot
     );
 
+# remove duplicate words – if a word appears twice in a description we
+# only want to count it once
+tidy.data <- unique(tidy.data)
+
 # remove stop words
 data('stop_words');
 tidy.data <- anti_join(tidy.data, stop_words);
 
 ### ANALYSIS ######################################################################################
 
-if(max(episode.data$season) > 10) {
+n.seasons <- max(episode.data$season);
+
+if(n.seasons > 11) {
     season.colours <- rep('black', max(episode.data$season));
 }
 
@@ -78,10 +88,22 @@ ratings <- ratings[order(ratings$median.rating, decreasing = TRUE), ];
 best.words <- rev(ratings$word[1:n]);
 worst.words <- rev(ratings$word[(nrow(ratings) - n + 1):nrow(ratings)]);
 
+
+options(bitmapType = 'cairo');
+
+png(
+    file.path('plots', paste0(show.id, '.png')),
+    width = 5.5,
+    height = 7,
+    units = 'in',
+    res = 500
+    );
+
+
 par(
     mfrow = c(2, 1),
-    oma = c(4,6.2,0,0) + 0.1,
-    mar = c(0,0,0.5,0.5) + 0.1
+    oma = c(3.5, 5.2,0, 0) + 0.1,
+    mar = c(0,0,0.5, 3) + 0.1
     );
 
 
@@ -92,6 +114,18 @@ dotboxplot(
     colours = season.colours[best.words.data$season],
     xaxt = 'n',
     rating.lim = range(episode.data$rating)
+    );
+
+
+legend(
+    x = par('usr')[2],
+    y = par('usr')[4],
+    xpd = TRUE,
+    legend = 1:n.seasons,
+    col = season.colours[1:n.seasons],
+    pch = 19,
+    bty = 'n',
+    cex = 0.8
     );
 
 
@@ -110,6 +144,6 @@ title(
     line = 2
     );
 
-
+dev.off();
 
 

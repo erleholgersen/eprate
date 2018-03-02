@@ -6,7 +6,7 @@ import argparse
 import numpy as np
 
 from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_score, GridSearchCV
 from sklearn.metrics import make_scorer, mean_squared_error, mean_absolute_error
 
 from helper_functions import *
@@ -39,10 +39,24 @@ Y = episode_data['rating']
 scorer = make_scorer(mean_squared_error)
 
 loss_functions = ['ls', 'lad', 'huber', 'quantile']
-n_estimators = [20, 50, 100, 200, 500]
 
-for loss in loss_functions:
-    for n in n_estimators:
-        model = GradientBoostingRegressor(loss = loss, n_estimators = n, learning_rate = 0.05)
-        scores = cross_val_score(model, X, Y, cv = 5, scoring = scorer)
-        print loss, n, np.mean(scores)
+n_estimators = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 500, 1000]
+learning_rates = [0.005, 0.01, 0.02, 0.04, 0.05]
+
+
+
+
+param_grid = [
+	{'n_estimators':  n_estimators, 'learning_rate': learning_rates, 'loss': loss_functions}
+	];
+
+# for loss in loss_functions:
+model = GridSearchCV(GradientBoostingRegressor(), param_grid, cv = 5)
+
+model.fit(X, Y);
+
+print model.best_params_
+
+
+
+
