@@ -30,7 +30,7 @@ episode_tokens, features = tokenize_episodes(episode_data['plot'], threshold = t
 X = pd.DataFrame(episode_tokens, columns = features.keys(), index = episode_data['title'])
 Y = episode_data['rating']
 
-gb_model = GradientBoostingRegressor(n_estimators = 50, learning_rate = 0.02, loss = 'lad')
+gb_model = GradientBoostingRegressor(n_estimators = 100, loss = 'lad')
 gb_model = gb_model.fit(X, Y)
 
 ### PREDICT ###################################################################
@@ -39,7 +39,7 @@ r = make_indicators(new_description, features)
 
 predicted_rating = gb_model.predict( np.array(r).reshape(1, -1) )
 
-print predicted_rating
+print(predicted_rating)
 
 
 

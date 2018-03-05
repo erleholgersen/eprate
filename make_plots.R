@@ -1,4 +1,6 @@
 ### make_plots.R ##################################################################################
+# Plot median rating by word
+#
 
 ### PREAMBLE ######################################################################################
 library(tidytext);
@@ -17,7 +19,7 @@ source('~/eprate/helper_functions.R');
 min.recurrence <- 5;
 n <- 10;
 
-show <- 'Game of Thrones';
+show <- 'Doctor Who';
 
 season.colours <- c(
     '#a6cee3','#1f78b4','#b2df8a','#33a02c',

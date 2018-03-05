@@ -48,7 +48,7 @@ def load_data(show):
 	filepath = os.path.join('data', show_name_string + '_episodes.tsv')
 
 	if not os.path.isfile(filepath):
-		error_message = "Sorry, I can't find episode data for " + args.show + '\n'
+		error_message = "Sorry, I can't find episode data for " + show + '\n'
 		error_message += 'Have you tried running gather_data.py?'
 
 		sys.exit(error_message)
@@ -93,10 +93,11 @@ def tokenize_episodes(episode_plots, threshold = 3, remove_stop_words = True):
 	'''
 	Convert episode plots to token representation
 
-	:param episode_plots:
-	:param threshold: recurrence threshold for word to
+	:param episode_plots: pandas series of episode plots
+	:param threshold: recurrence threshold for word to be included in bag-of-words model
 	:param remove_stop_words: boolean indicating if stop words should be removed.
 
+	:return: pandas data frame where each row is an episode and each column is a word
 	'''
 
 	features = get_all_features(episode_plots, threshold = threshold, remove_stop_words = remove_stop_words)
