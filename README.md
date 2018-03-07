@@ -3,6 +3,8 @@ Text mining of IMDB episode descriptions to look for associations with episode r
 
 The scripts are written in Python 3, and depend on numpy, pandas, scikit-learn and the [IMDbPy](http://imdbpy.sourceforge.io) module.
 
+For more details on the initial analysis, see [Predicting Doctor Who Episode Ratings](https://erle.io/blog/2018-03-05-predicting-imdb-episode-ratings/).
+
 
 ## Downloading Data
 
@@ -24,7 +26,7 @@ $ python3 predict_rating.py "Doctor Who" "The Doctor adopts a baby Dalek"
 
 ## Benchmarking Models
 
-The script `benchmark_models.py` can be used to assess the performance of different algorithms on predicting ratings for a particular show through [h2o](http://h2o.ai). After fitting the models the h2o leaderboard is printed to screen.
+The script `benchmark_models.py` can be used to assess the performance of different algorithms on predicting ratings for a particular show through [h2o](http://h2o.ai). The h2o leaderboard is printed to screen.
 
 ```
 $ python3 benchmark_models.py "Doctor Who"
