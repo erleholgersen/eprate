@@ -15,12 +15,21 @@ Downloading data on Doctor Who
 
 ## Predicting on New Data
 
-To predict the rating for a new episode description, use the `predict_rating.py` script.
+To predict the rating for a new episode description, use the `predict_rating.py` script. The prediction is made based on a gradient boosting machine with 100 iterations and a learning rate of 0.01.
 
 ```
 $ python3 predict_rating.py "Doctor Who" "The Doctor adopts a baby Dalek"
 [ 8.10292221]
 ```
+
+## Benchmarking Models
+
+The script `benchmark_models.py` can be used to assess the performance of different algorithms on predicting ratings for a particular show through [h2o](http://h2o.ai). After fitting the models the h2o leaderboard is printed to screen.
+
+```
+$ python3 benchmark_models.py "Doctor Who"
+```
+
 
 ## Visualization
 
