@@ -3,9 +3,6 @@ Text mining of IMDB episode descriptions to look for associations with episode r
 
 The scripts are written in Python 3, and depend on numpy, pandas, scikit-learn and the [IMDbPy](http://imdbpy.sourceforge.io) module.
 
-For more details on the initial analysis, see [Predicting Doctor Who Episode Ratings](https://erle.io/blog/2018-03-05-predicting-imdb-episode-ratings/).
-
-
 ## Downloading Data
 
 To download data, run the `gather_data.py` script. The script takes the name of the show as a command line argument.
